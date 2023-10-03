@@ -5,7 +5,7 @@
 # apt update && apt install git -y && cd /opt && git clone https://github.com/cityplug/titan && apt full-upgrade -y && chmod +x /opt/titan/.scripts/start.sh && reboot
 # cd /opt/titan/.scripts && ./start.sh
 
-# --- Initialzing library
+# --- Initialzing libraries
 hostnamectl set-hostname titan.estate.cityplug.local
 echo "deb http://deb.debian.org/debian bookworm-backports main contrib" >> /etc/apt/sources.list
 
@@ -28,6 +28,9 @@ apt install apt-transport-https ca-certificates software-properties-common gnupg
 apt install arping -y
 apt full-upgrade -y
 apt autoremove && apt autoclean -y
+
+# --- Install casaos
+curl -fsSL https://get.casaos.io | sudo bash
 
 # --- Install Tailscale
 curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.gpg | apt-key add -
@@ -71,25 +74,24 @@ net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1" >> /etc/sysctl.conf
 sysctl -p
 
+# --- Security Addons
+groupadd ssh-users
+groupadd titans
+usermod -aG ssh-users,titans focal
+sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
+
 # -- Parent Folder
-mkdir -p /titan/appdata/ && chown focal /titan
+mkdir -p /titan/appdata/ 
+mkdir /titan_/libraries/
+mkdir /titan/libraries/baari && mkdir /titan/libraries/shanice
 
-chmod -R 777 /titan/appdata && chown -R nobody:nogroup /titan/appdata
-
-mkdir /titan_/library/
-chmod -R 777 /titan/library && chown -R nobody:nogroup /titan/library
-
-mkdir /titan/library/baari && mkdir /titan/library/shanice
-chmod -R 777 /titan/library/baari && chmod -R 777 /titan/library/shanice
+chown -R focal:titans /titan/*
+chmod -R 777 /titan/ && chown -R focal:titans /titan
+chmod -R 777 /titan/* && chown -R nobody:nogroup /titan/*
 
 # --- Mount USB
 echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /titan/  auto   defaults,user,nofail  0   0" >> /etc/fstab
 mount -a
-
-# --- Security Addons
-groupadd ssh-users
-usermod -aG ssh-users focal
-sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
 
 # --- Firewall Rules 
 ufw deny 22
@@ -101,11 +103,13 @@ ufw allow 53 #pihole
 ufw allow 85 #homer
 ufw logging on
 ufw status
-ufw enable
+#ufw enable
 
 #--
 systemctl enable docker && usermod -aG docker focal
 docker-compose --version && docker --version
+
+tailscale up
 
 echo "#  ---  SYSTEM REBOOT  ---  #"
 # ----> Next Script | more.sh
