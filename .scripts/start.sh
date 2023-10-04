@@ -109,10 +109,18 @@ ufw status
 systemctl enable docker && usermod -aG docker focal
 docker-compose --version && docker --version
 
-tailscale up
+
+tailscale up --advertise-routes=192.168.7.0/24
 
 echo "#  ---  SYSTEM REBOOT  ---  #"
 # ----> Next Script | more.sh
 reboot
 ------------------------------------------------------------------------------
 
+# --- ArgonOne Fan Control
+curl https://download.argon40.com/argonfanhat.sh | bash
+rm /etc/argononed.conf
+echo "
+65=10
+70=45
+75=100" >> /etc/argononed.conf
