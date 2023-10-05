@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # --- Docker Services
-echo
 docker-compose up -d
 #docker run -d --name pihole --restart always -p 53:53/tcp -p 53:53/udp -p 80:80/tcp -p 443:443/tcp -e TZ=Europe/London -e WEBPASSWORD= -e WEBTHEME=default-dark -e PIHOLE_DOMAIN=titan.estate.cityplug.local --hostname pihole.titan -v /titan/appdata/pihole:/etc/pihole/ -v /titan/appdata/pihole/dnsmasq:/etc/dnsmasq.d/ --cap-add NET_ADMIN pihole/pihole:latest
 docker run -d --name homer --restart always -p 85:8080 -v /titan/appdata/homer/assets:/www/assets b4bz/homer:latest

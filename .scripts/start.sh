@@ -2,8 +2,9 @@
 
 # Debian (titan.estate.cityplug.local) setup script.
 
-# apt update && apt install git -y && cd /opt && git clone https://github.com/cityplug/titan && apt full-upgrade -y && chmod +x /opt/titan/.scripts/start.sh && reboot
+# apt update && apt install git -y && cd /opt && git clone https://github.com/cityplug/titan && apt full-upgrade -y && chmod +x /opt/titan/.scripts/* && reboot
 # cd /opt/titan/.scripts && ./start.sh
+# cd /opt/titan/.scripts && ./finish.sh
 
 # --- Initialzing libraries
 hostnamectl set-hostname titan.estate.cityplug.local
@@ -31,6 +32,7 @@ apt autoremove && apt autoclean -y
 
 # --- Install casaos
 curl -fsSL https://get.casaos.io | sudo bash
+rm /etc/casaos/gateway.ini && mv /opt/titan/.scripts/gateway.ini /etc/casaos
 
 # --- Install Tailscale
 curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.gpg | apt-key add -

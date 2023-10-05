@@ -20,7 +20,7 @@
 ###### Find the line that says “#Port 22” and change it to desired port 
 ###### Change “PermitRootLogin” and set to “no”. Set PermitRootLogin to “no”, 
 ###### Scroll further and set “PasswordAuthentication” to “no” and finally set PasswordAuthentication to “no”
-    apt update && apt full-upgrade -y && reboot
+    apt update && apt full-upgrade -y && reboot && exit
 --------------------------------------------------------------------------------
 #### Run the following scripts
     sudo su
