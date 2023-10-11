@@ -9,7 +9,7 @@ target: "_blank" # optional html a tag target attribute
 stylesheet:
   - "assets/custom.css"
 
-columns: "4" # Change this to any number: (1, 2, 3, 4, 6, 12)
+columns: "3" # Change this to any number: (1, 2, 3, 4, 6, 12)
 colors:
   dark:
     highlight-primary: "#181C3A"
@@ -54,77 +54,67 @@ links:
    icon: "fa-brands fa-youtube"
    url: "https://www.youtube.com/"
    target: "_blank" # optional html a tag target attribute
- - name: "Github"
-   icon: "fab fa-github-alt"
-   url: "https://github.com/cityplug?tab=repositories"
-   target: "_blank" # optional html a tag target attribute
  - name: "Router"
-   icon: "fa-regular fa-map"
+   icon: "fa-solid fa-network-wired"
    url: "https://192.168.7.1"
+   target: "_blank" # optional html a tag target attribute
+ - name: "Tailscale"
+   icon: "fa-solid fa-layer-group"
+   url: "https://login.tailscale.com/admin/machines"
    target: "_blank" # optional html a tag target attribute 
 
 services:
-  - name: "//Hardware"
+  - name: "Core - Services"
     icon: "fa-solid fa-server"
     items:
-      - name: "Wireguard"
-        logo: "assets/tools/wireguard.png"
+      - name: "Titan Proxy"
+        logo: "assets/tools/npm.png"
         subtitle: "... ..."
-        tag: "app"
-        tagstyle: "is-link"
-        url: "http://192.168.7.254:14792/"
+        tag: "core"
+        tagstyle: "is-warning"
+        url: "http://192.168.7.254:91"
         target: "_blank" # optional html a tag target attribute
       - name: "ReoLink"
         logo: "assets/tools/reo.png"
         subtitle: "... ..."
-        tag: "app"
-        tagstyle: "is-link"
+        tag: "core"
+        tagstyle: "is-warning"
         url: "http://192.168.7.***/"
         target: "_blank" # optional html a tag target attribute
-
-  - name: "//Services"
-    icon: "fa-solid fa-gears"
-    items:
       - name: "Pihole"
         logo: "assets/tools/pihole.png"
         subtitle: "... ..."
-        tag: "service"
+        tag: "app1"
         tagstyle: "is-success"
         url: "http://192.168.7.254/admin/"
         target: "_blank" # optional html a tag target attribute
-      - name: "Unifi Controller"
-        logo: "assets/tools/controller.png"
-        subtitle: "... ... ..."
-        tag: "core"
-        tagstyle: "is-link"
-        url: "https://unifi.cityplug.co.uk:8443"
-        target: "_blank" # optional html a tag target attribute
-      - name: "Unifi Portal"
-        logo: "assets/tools/portal.png"
-        subtitle: "... ... ..."
-        tag: "core"
-        tagstyle: "is-link"
-        url: "https://unifi.ui.com/consoles"
-        target: "_blank" # optional html a tag target attribute
 
-  - name: "//Management"
+  - name: "Management - Services"
     icon: "fa-solid fa-folder-open"
     items:
       - name: "Cockpit"
         logo: "assets/tools/cockpit.png"
         subtitle: "... ..."
-        tag: "link"
-        tagstyle: "is-link"
+        tag: "app2"
+        tagstyle: "is-success"
         url: "http://192.168.7.254:9090"
         target: "_blank" # optional html a tag target attribute
 
-  - name: "//Estate"
-    icon: "fa-solid fa-house-lock"
+  - name: "Remote - Services"
+    icon: "fa-solid fa-gears"
     items:
-      - name: "Zero"
+      - name: "Unifi Portal"
+        logo: "assets/tools/portal.png"
+        subtitle: "... ... ..."
+        tag: "core"
+        tagstyle: "is-warning"
+        url: "https://unifi.ui.com/consoles"
+        target: "_blank" # optional html a tag target attribute
+      - name: "Resolvr"
         logo: "assets/tools/ghost.png"
         subtitle: ""
-        tag: "bridge"
-        tagstyle: "is-link"
+        tag: "remote"
+        tagstyle: "is-danger"
         url: "http://192.168.10.254:85/"
 #        target: "_blank" # optional html a tag target attribute
+

@@ -30,10 +30,6 @@ apt install arping -y
 apt full-upgrade -y
 apt autoremove && apt autoclean -y
 
-# --- Install casaos
-curl -fsSL https://get.casaos.io | sudo bash
-rm /etc/casaos/gateway.ini && mv /opt/titan/.scripts/gateway.ini /etc/casaos
-
 # --- Install Tailscale
 curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.gpg | apt-key add -
 curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.list | tee /etc/apt/sources.list.d/tailscale.list && apt update -y
@@ -126,3 +122,7 @@ echo "
 65=10
 70=45
 75=100" >> /etc/argononed.conf
+
+# --- Install casaos
+curl -fsSL https://get.casaos.io | sudo bash
+rm /etc/casaos/gateway.ini && mv /opt/titan/.scripts/gateway.ini /etc/casaos

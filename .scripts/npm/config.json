@@ -1,0 +1,10 @@
+{
+  "database": {
+    "engine": "mysql",
+    "host": "db",
+    "name": "npm",
+    "user": "focal",
+    "password": "9876@@",
+    "port": 3306
+  }
+}
