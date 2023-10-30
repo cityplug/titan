@@ -24,9 +24,7 @@ dtoverlay=disable-bt" >> /boot/config.txt
 # --- Install Packages
 echo "#  ---  Installing New Packages  ---  #"
 apt update -y
-apt install ufw -y
-apt install apt-transport-https ca-certificates software-properties-common gnupg -y
-apt install arping -y
+apt install apt-transport-https ca-certificates software-properties-common gnupg ufw -y
 apt full-upgrade -y
 apt autoremove && apt autoclean -y
 
@@ -66,6 +64,7 @@ echo "#  ---  2GB swap file created ---  #"
 # --- Addons
 rm -rf /etc/update-motd.d/* && rm -rf /etc/motd && rm /etc/motd.d/cockpit
 mv /opt/titan/10-uname /etc/update-motd.d/ && chmod +x /etc/update-motd.d/10-uname
+mv /opt/titan/.scripts/npm/npm_config.json /opt/titan/.scripts/npm/config.json
 
 echo "
 net.ipv4.ip_forward = 1

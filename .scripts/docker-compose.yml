@@ -1,0 +1,67 @@
+version: '3'
+services:
+  npm_app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    ports:
+      - 90:80
+      - 91:81
+      - 443:443
+    volumes:
+      - /opt/titan/.scripts/npm/config.json:/app/config/production.json
+      - /titan/appdata/npm/data:/data
+      - /titan/appdata/npm/letsencrypt:/etc/letsencrypt
+  npm_db:
+    image: 'yobasystems/alpine-mariadb:latest'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'npm'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'focal'
+      MYSQL_PASSWORD: '9876@@'
+    volumes:
+      - /titan/appdata/npm/data/mysql:/var/lib/mysql
+
+  nxfilter:
+    image: deepwoods/nxfilter:latest
+    ports:
+      - 53:53/udp
+      - 19004:19004/udp
+      - 80:80
+      - 443:443
+      - 19002-19004:19002-19004 
+    environment:
+      - TZ=Europe/London 
+    volumes:
+      - /titan/appdata/nxfilter:/nxfilter/conf
+      - /titan/appdata/nxfilter/db:/nxfilter/db
+      - /titan/appdata/nxfilter/log:/nxfilter/log
+    restart: unless-stopped
+
+  scrypted:
+    image: koush/scrypted:latest
+    network_mode: host
+    volumes:
+      - /titan/appdata/scrypted:/server/volume
+    restart: unless-stopped
+
+  homer:
+    image: b4bz/homer:latest
+    container_name: homer
+    volumes:
+      - /titan/appdata/homer/assets:/www/assets
+    ports:
+      - 85:8080
+    user: 1000:1000 # default
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    build:
+      context: ./
+      dockerfile: dockerfiles/Dockerfile.dev-self-contained
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8080:8080
+    command:  --interval 3600 --cleanup
+    restart: unless-stopped
