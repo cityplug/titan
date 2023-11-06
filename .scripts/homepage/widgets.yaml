@@ -1,0 +1,14 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/widgets
+
+- resources:
+    cpu: true
+    memory: true
+    disk: /media/devmon/iron
+- resources:
+    disk: /media/devmon/iron
+
+- search:
+    provider: google
+    target: _blank

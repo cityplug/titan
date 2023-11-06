@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# Debian (titan.estate.cityplug.local) setup script.
+# Debian (titan.local.cityplug) setup script.
 
 # apt update && apt install git -y && cd /opt && git clone https://github.com/cityplug/titan && apt full-upgrade -y && chmod +x /opt/titan/.scripts/* && reboot
 # cd /opt/titan/.scripts && ./start.sh
 # cd /opt/titan/.scripts && ./finish.sh
 
 # --- Initialzing libraries
-hostnamectl set-hostname titan.estate.cityplug.local
-echo "deb http://deb.debian.org/debian bookworm-backports main contrib" >> /etc/apt/sources.list
+hostnamectl set-hostname titan.local.cityplug
 
 # --- Change root password
 echo "#  ---  Change root password  ---  #"
@@ -33,10 +32,6 @@ curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.gpg | apt-key add
 curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.list | tee /etc/apt/sources.list.d/tailscale.list && apt update -y
 apt install tailscale -y
 
-# --- Install CockPit
-apt install -t bookworm-backports cockpit --no-install-recommends
-rm /etc/cockpit/disallowed-users && touch /etc/cockpit/disallowed-users
-
 # --- Install Docker
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
@@ -48,7 +43,7 @@ echo \
 apt update && apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 
 # --- Install Docker-Compose
-wget https://github.com/docker/compose/releases/download/v2.15.1/docker-compose-linux-aarch64 -O /usr/local/bin/docker-compose
+wget https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-aarch64 -O /usr/local/bin/docker-compose
 
 chmod +x /usr/local/bin/docker-compose && apt install docker-compose -y
 
@@ -72,30 +67,28 @@ net.ipv6.conf.all.forwarding = 1" >> /etc/sysctl.conf
 sysctl -p
 
 # --- Security Addons
-groupadd ssh-users
-groupadd titans
-usermod -aG ssh-users,titans focal
+groupadd ssh-users,titan
+usermod -aG ssh-users,titan focal
 sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
 
 # -- Parent Folder
-mkdir -p /titan/appdata/ 
-mkdir /titan_/libraries/
-mkdir /titan/libraries/baari && mkdir /titan/libraries/shanice
+mkdir -p /env/appdata/ 
+mkdir /env/libraries/
+mkdir /env/libraries/baari && mkdir /env/libraries/shanice
 
-chown -R focal:titans /titan/*
-chmod -R 777 /titan/ && chown -R focal:titans /titan
-chmod -R 777 /titan/* && chown -R nobody:nogroup /titan/*
+chown -R focal:titan /env/*
+chmod -R 777 /env/ && chown -R focal:titan /env
+chmod -R 777 /env/* && chown -R nobody:nogroup /env/*
 
 # --- Mount USB
-echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /titan/  auto   defaults,user,nofail  0   0" >> /etc/fstab
+echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /env/  auto   defaults,user,nofail  0   0" >> /etc/fstab
 mount -a
 
 # --- Firewall Rules 
 ufw deny 22
 ufw allow 4792
-ufw allow from 192.168.7.0/24 to any port 9090 #cockpit
-ufw allow from 10.0.0.0/24 to any port 9090 #cockpit
-ufw allow from 192.168.10.0/24 to any port 9090 #cockpit
+ufw allow from 192.168.7.0/24 to any port 8123 #nextcloud
+ufw allow tailscale
 ufw allow 53 #pihole
 ufw allow 85 #homer
 ufw logging on
@@ -105,8 +98,6 @@ ufw status
 #--
 systemctl enable docker && usermod -aG docker focal
 docker-compose --version && docker --version
-
-
 tailscale up --advertise-routes=192.168.7.0/24
 
 echo "#  ---  SYSTEM REBOOT  ---  #"
@@ -115,13 +106,18 @@ reboot
 ------------------------------------------------------------------------------
 
 # --- ArgonOne Fan Control
-curl https://download.argon40.com/argonfanhat.sh | bash
-rm /etc/argononed.conf
-echo "
-65=10
-70=45
-75=100" >> /etc/argononed.conf
+#curl https://download.argon40.com/argonfanhat.sh | bash
+#rm /etc/argononed.conf
+#echo "
+#65=10
+#70=45
+#75=100" >> /etc/argononed.conf
 
 # --- Install casaos
-curl -fsSL https://get.casaos.io | sudo bash
-rm /etc/casaos/gateway.ini && mv /opt/titan/.scripts/gateway.ini /etc/casaos
+#curl -fsSL https://get.casaos.io | sudo bash
+#rm /etc/casaos/gateway.ini && mv /opt/titan/.scripts/gateway.ini /etc/casaos
+
+#echo "deb http://deb.debian.org/debian bookworm-backports main contrib" >> /etc/apt/sources.list
+# --- Install CockPit
+#apt install -t bookworm-backports cockpit --no-install-recommends
+#rm /etc/cockpit/disallowed-users && touch /etc/cockpit/disallowed-users

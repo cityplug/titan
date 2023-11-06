@@ -1,0 +1,35 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Core - Services:
+    - Titan Proxy:
+        icon: nginx-proxy-manager.png
+        href: http://192.168.7.254:91
+        description: ...
+    - Reolink:
+        icon: /env/appdata/homepage/icons/reo.png
+        href: http://192.168.7.***
+        description: ... ...
+    - Pihole:
+        href: http://192.168.7.254/admin
+        description: ... ... ...
+        icon: pi-hole.png
+
+- Management - Services:
+    - Nextcloud:
+        href: http://192.168.7.254:8123
+        description: ...
+        icon: nextcloud.png
+        ping: 192.168.10.254
+        container: focal-app-1
+
+- Remote Services:
+    - Unifi Portal:
+        href: https://unifi.ui.com/consoles
+        description: ...
+        icon: /env/appdata/homepage/icons/portal.png
+    - Resolvr:
+        href: http://192.168.10.254
+        description: ... ...
+        icon: /env/appdata/homepage/icons/ghost.png

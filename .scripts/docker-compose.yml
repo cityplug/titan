@@ -1,5 +1,80 @@
-version: '3'
+version: "3.3"
+
 services:
+
+  pihole:
+    container_name: pihole
+    hostname: pihole.titan
+    image: pihole/pihole:latest
+    environment:
+      WEBTHEME: default-dark
+      TZ: Europe/London
+      WEBPASSWORD:
+      PIHOLE_DOMAIN: titan.local.cityplug
+    volumes:
+      - /env/appdata/pihole:/etc/pihole/
+      - /env/appdata/pihole/dnsmasq:/etc/dnsmasq.d/
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 80:80/tcp
+      - 443:443/tcp
+    cap_add:
+      - NET_ADMIN
+    restart: always
+
+  homepage:
+    container_name: homepage
+    hostname: titan.homepage
+    image: ghcr.io/gethomepage/homepage:latest
+    volumes:
+      - /env/appdata/homepage:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    # user: 1000:1000 optional, not compatibile with direct socket see https://gethomepage.dev/en/configs/docker/#using-socket-directly
+    ports:
+      - 8921:3000
+    restart: unless-stopped
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    hostname: watchtower
+    build:
+      context: ./
+      dockerfile: dockerfiles/Dockerfile.dev-self-contained
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8080:8080
+    command:  --interval 3600 --cleanup
+    restart: unless-stopped
+
+  db: 
+    image: yobasystems/alpine-mariadb:latest
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - /env/appdata/nextcloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=T0day.T1jan333
+      - MYSQL_PASSWORD=T0day.T1jan333
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=focal
+  app:
+    image: nextcloud
+    restart: always
+    ports:
+      - 8123:80
+    links:
+      - db
+    volumes:
+      - /env/appdata/nextcloud/:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=T0day.T1jan333
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=focal
+      - MYSQL_HOST=db
+
   npm_app:
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
@@ -10,6 +85,7 @@ services:
       - /opt/titan/.scripts/npm/config.json:/app/config/production.json
       - /titan/appdata/npm/data:/data
       - /titan/appdata/npm/letsencrypt:/etc/letsencrypt
+    restart: always
   npm_db:
     image: 'yobasystems/alpine-mariadb:latest'
     environment:
@@ -18,50 +94,5 @@ services:
       MYSQL_USER: 'focal'
       MYSQL_PASSWORD: '9876@@'
     volumes:
-      - /titan/appdata/npm/data/mysql:/var/lib/mysql
-
-  nxfilter:
-    image: deepwoods/nxfilter:latest
-    ports:
-      - 53:53/udp
-      - 19004:19004/udp
-      - 80:80
-      - 443:443
-      - 19002-19004:19002-19004 
-    environment:
-      - TZ=Europe/London 
-    volumes:
-      - /titan/appdata/nxfilter:/nxfilter/conf
-      - /titan/appdata/nxfilter/db:/nxfilter/db
-      - /titan/appdata/nxfilter/log:/nxfilter/log
-    restart: unless-stopped
-
-  scrypted:
-    image: koush/scrypted:latest
-    network_mode: host
-    volumes:
-      - /titan/appdata/scrypted:/server/volume
-    restart: unless-stopped
-
-  homer:
-    image: b4bz/homer:latest
-    container_name: homer
-    volumes:
-      - /titan/appdata/homer/assets:/www/assets
-    ports:
-      - 85:8080
-    user: 1000:1000 # default
+      - /env/appdata/npm/data/mysql:/var/lib/mysql
     restart: always
-
-  watchtower:
-    image: containrrr/watchtower:latest
-    container_name: watchtower
-    build:
-      context: ./
-      dockerfile: dockerfiles/Dockerfile.dev-self-contained
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    ports:
-      - 8080:8080
-    command:  --interval 3600 --cleanup
-    restart: unless-stopped
