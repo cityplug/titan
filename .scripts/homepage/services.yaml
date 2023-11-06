@@ -3,33 +3,80 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Core - Services:
-    - Titan Proxy:
-        icon: nginx-proxy-manager.png
-        href: http://192.168.7.254:91
+    - Pihole:
+        href: http://192.168.10.92/admin
         description: ...
+        icon: pi-hole.png
+        ping: 192.168.10.92:81
+        container: pihole
+        widget:
+          type: pihole
+          url: http://192.168.10.92
+          key: 28c361af2b72518bbb6c37405f604461c1a4143d4f9af9d99b16be5a25765aa3
+    - Titan Proxy:
+        href: http://192.168.10.92:91
+        description: ... ...
+        icon: nginx-proxy-manager.png
+        ping: 192.168.10.92:91
+        container: npm-app
+        widget:
+          type: npm
+          url: http://192.168.10.92:91
+          username: seni@cityplug.co.uk
+          password: Szxs234.
+    - Nextcloud:
+        href: http://192.168.10.92:8123
+        description: ... ... ...
+        icon: nextcloud.png
+        ping: 192.168.10.92:8123
+        container: nextcloud_app
+        widget:
+          type: nextcloud
+          url: http://192.168.10.92:8123
+          username: focal
+          password: Szxs234.
+    - Portainer:
+        href: https://192.168.10.92:9443
+        description: ... ... ... ...
+        icon: portainer.png
+        ping: 192.168.10.92:9000
+        container: portainer
+        widget:
+          type: portainer
+          url: https://192.168.10.92:9443
+          env: 2
+          key: ptr_DVOfwJakP1G7UZLbQlF5uPPogyMZ1Voo15tcO4f9c5s=
+
+- Secondary - Services:
     - Reolink:
-        icon: /env/appdata/homepage/icons/reo.png
+        icon: channels.png
         href: http://192.168.7.***
         description: ... ...
-    - Pihole:
-        href: http://192.168.7.254/admin
-        description: ... ... ...
-        icon: pi-hole.png
+        ping:
+    - Watchtower:
+        href:
+        description: ... ...
+        icon: watchtower.png
+        container: watchtower
+        widget:
+          type: watchtower
+          url: http://192.168.10.92:8080
+          key: demotoken
 
-- Management - Services:
-    - Nextcloud:
-        href: http://192.168.7.254:8123
-        description: ...
-        icon: nextcloud.png
-        ping: 192.168.10.254
-        container: focal-app-1
-
-- Remote Services:
+- Remote - Services:
     - Unifi Portal:
         href: https://unifi.ui.com/consoles
-        description: ...
-        icon: /env/appdata/homepage/icons/portal.png
+        description: ... ...
+        icon: unifi.png
+        ping: https://unifi.ui.com/consoles
+        widget:
+          type: unifi
+          url: https://unifi.host.or.ip:port
+          username: username
+          password: password
+          site: Site Name # optional
     - Resolvr:
         href: http://192.168.10.254
         description: ... ...
-        icon: /env/appdata/homepage/icons/ghost.png
+        icon: baserow.png
+        ping: 192.168.10.254

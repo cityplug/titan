@@ -2,23 +2,26 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/bookmarks
 
-- Developer:
-    - Github:
-        - abbr: GH
-          href: https://github.com/
+- Short Cuts:
+    - Youtube:
+        - abbr: YT
+          href: https://youtube.com/
+          icon: youtube.png
+    - Youtube Music:
+        - abbr: YTM
+          href: https://music.youtube.com/
+          icon: youtube-music
 
-- Social:
-    - Reddit:
-        - abbr: RE
-          href: https://reddit.com/
-
-- Paths:
-    - Router:
-        - abbr: RT
-          href: https://192.168.7.1
+- Links:
     - Cloudflare:
         - abbr: CF
           href: https://dash.cloudflare.com/
+          icon: cloudflare.png
     - Tailscale:
         - abbr: TS
           href: https://login.tailscale.com/admin/machines
+          icon: tailscale.png
+    - Anydesk:
+        - abbr: AD
+          href: https://anydesk.com/uk/downloads/thank-you?dv=win_exe
+          icon: https://static-00.iconduck.com/assets.00/anydesk-icon-2048x2048-1tqcckxw.png

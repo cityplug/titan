@@ -73,12 +73,7 @@ sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
 
 # -- Parent Folder
 mkdir -p /env/appdata/ 
-mkdir /env/libraries/
-mkdir /env/libraries/baari && mkdir /env/libraries/shanice
-
-chown -R focal:titan /env/*
-chmod -R 777 /env/ && chown -R focal:titan /env
-chmod -R 777 /env/* && chown -R nobody:nogroup /env/*
+chmod -R 777 /env/ && chown -R nobody:nogroup /env/
 
 # --- Mount USB
 echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /env/  auto   defaults,user,nofail  0   0" >> /etc/fstab
@@ -121,3 +116,8 @@ reboot
 # --- Install CockPit
 #apt install -t bookworm-backports cockpit --no-install-recommends
 #rm /etc/cockpit/disallowed-users && touch /etc/cockpit/disallowed-users
+
+#mkdir /env/libraries/
+#mkdir /env/libraries/baari && mkdir /env/libraries/shanice
+#chown -R focal:titan /env/*
+#chmod -R 777 /env/ && chown -R focal:titan /env

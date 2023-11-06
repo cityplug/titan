@@ -2,6 +2,28 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/settings
 
+title: Titan Dashboard
+
+background: https://cityplug-my.sharepoint.com/:i:/g/personal/seni_cityplug_co_uk/ESoh6MoGdsxIgtBZDIjyXzMBY5LntazpBUMMV1S0-S_epg?e=8tyfr4
+
+headerStyle: clean
+cardBlur: sm
+
+layout:
+  Core - Services:
+    style: row
+    columns: 4
+
 providers:
   openweathermap: openweathermapapikey
   weatherapi: weatherapiapikey
+
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  hideVisitURL: true
+
+hideVersion: true
+hideErrors: true
+showStats: true
+statusStyle: "basic"

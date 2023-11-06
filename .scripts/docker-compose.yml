@@ -18,7 +18,7 @@ services:
       - 53:53/tcp
       - 53:53/udp
       - 80:80/tcp
-      - 443:443/tcp
+#      - 443:443/tcp
     cap_add:
       - NET_ADMIN
     restart: always
@@ -30,10 +30,10 @@ services:
     volumes:
       - /env/appdata/homepage:/app/config
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    # user: 1000:1000 optional, not compatibile with direct socket see https://gethomepage.dev/en/configs/docker/#using-socket-directly
+      - /env/appdata/homepage/images:/app/public/images
     ports:
       - 8921:3000
-    restart: unless-stopped
+    restart: always
 
   watchtower:
     container_name: watchtower
@@ -49,7 +49,28 @@ services:
     command:  --interval 3600 --cleanup
     restart: unless-stopped
 
-  db: 
+  app:
+    container_name: nextcloud_app
+    image: nextcloud
+    restart: always
+    ports:
+      - 8123:80
+    links:
+      - db
+    volumes:
+      - /env/appdata/nextcloud/:/var/www/html
+      - /env/appdata/nextcloud/config:/var/www/html/config
+      - /env/appdata/nextcloud/custom_apps:/var/www/html/custom_apps
+      - /env/appdata/nextcloud/data:/var/www/html/data
+      - /env/appdata/nextcloud/themes:/var/www/html/themes
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - MYSQL_PASSWORD=T0day.T1jan333
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+  db:
+    container_name: nextcloud_db
     image: yobasystems/alpine-mariadb:latest
     restart: always
     command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
@@ -59,23 +80,10 @@ services:
       - MYSQL_ROOT_PASSWORD=T0day.T1jan333
       - MYSQL_PASSWORD=T0day.T1jan333
       - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=focal
-  app:
-    image: nextcloud
-    restart: always
-    ports:
-      - 8123:80
-    links:
-      - db
-    volumes:
-      - /env/appdata/nextcloud/:/var/www/html
-    environment:
-      - MYSQL_PASSWORD=T0day.T1jan333
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=focal
-      - MYSQL_HOST=db
+      - MYSQL_USER=nextcloud
 
-  npm_app:
+  npm-app:
+    container_name: npm-app
     image: 'jc21/nginx-proxy-manager:latest'
     ports:
       - 90:80
@@ -83,16 +91,17 @@ services:
       - 443:443
     volumes:
       - /opt/titan/.scripts/npm/config.json:/app/config/production.json
-      - /titan/appdata/npm/data:/data
-      - /titan/appdata/npm/letsencrypt:/etc/letsencrypt
+      - /env/appdata/npm/data:/data
+      - /env/appdata/npm/letsencrypt:/etc/letsencrypt
     restart: always
-  npm_db:
+  npm-db:
+    container_name: npm-db
     image: 'yobasystems/alpine-mariadb:latest'
     environment:
-      MYSQL_ROOT_PASSWORD: 'npm'
-      MYSQL_DATABASE: 'npm'
-      MYSQL_USER: 'focal'
-      MYSQL_PASSWORD: '9876@@'
+      - MYSQL_ROOT_PASSWORD=T0day.T1jan333
+      - MYSQL_PASSWORD=T0day.T1jan333
+      - MYSQL_DATABASE=npm
+      - MYSQL_USER=focal
     volumes:
       - /env/appdata/npm/data/mysql:/var/lib/mysql
     restart: always

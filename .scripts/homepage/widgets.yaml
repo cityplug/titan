@@ -2,13 +2,32 @@
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/widgets
 
+#- logo:
+#    icon: https://server-ip/logo.png
+
 - resources:
     cpu: true
     memory: true
-    disk: /media/devmon/iron
-- resources:
-    disk: /media/devmon/iron
-
+    disk: /
+    cputemp: true
+    uptime: true
 - search:
     provider: google
     target: _blank
+
+- openmeteo:
+    label: London
+    latitude: 51.5085
+    longitude: -0.1257
+    timezone: Europe/London
+    provider: openweathermap
+    units: metric
+    cache: 5 # Time in minutes to cache API responses, to stay within limits
+
+- datetime:
+    text_size: xl
+    locale: gb
+    format:
+      dateStyle: short
+      timeStyle: short
+      hour12: true

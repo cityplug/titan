@@ -20,7 +20,7 @@ Temperature........: `vcgencmd measure_temp | grep  -o -E '[[:digit:]].*'`
 $(tput sgr0)"
 df -hT /
 echo
-df -hT /titan/
+df -hT /env/
 echo
 
 tailscale ip -4
