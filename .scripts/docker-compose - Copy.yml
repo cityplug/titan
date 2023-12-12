@@ -18,6 +18,7 @@ services:
       - 53:53/tcp
       - 53:53/udp
       - 80:80/tcp
+#      - 443:443/tcp
     cap_add:
       - NET_ADMIN
     restart: always
@@ -34,30 +35,29 @@ services:
       - 8921:3000
     restart: always
 
-  db:
-    container_name: nextcloud_db
-    image: yobasystems/alpine-mariadb:latest
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    hostname: watchtower
+    build:
+      context: ./
+      dockerfile: dockerfiles/Dockerfile.dev-self-contained
     volumes:
-      - /var/lib/docker/volumes/Nextcloud_Database:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=T0day.T1jan333
-      - MYSQL_PASSWORD=Szxs9876@@
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 8080:8080
+    command:  --interval 3600 --cleanup
+    restart: unless-stopped
 
   app:
-    container_name: nextcloud
-    hostname: nextcloud
+    container_name: nextcloud_app
     image: nextcloud
     restart: always
     ports:
-      - 8080:80
+      - 8123:80
     links:
       - db
     volumes:
-#      - /var/lib/docker/volumes/Nextcloud_Application:/var/www/html
       - /env/appdata/nextcloud/:/var/www/html
       - /env/appdata/nextcloud/config:/var/www/html/config
       - /env/appdata/nextcloud/custom_apps:/var/www/html/custom_apps
@@ -65,12 +65,22 @@ services:
       - /env/appdata/nextcloud/themes:/var/www/html/themes
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - MYSQL_PASSWORD=Szxs9876@@
+      - MYSQL_PASSWORD=T0day.T1jan333
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_HOST=db
-      - PHP_UPLOAD_LIMIT=16G
-      - PHP_MEMORY_LIMIT=16G
+  db:
+    container_name: nextcloud_db
+    image: yobasystems/alpine-mariadb:latest
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - /env/appdata/nextcloud/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=T0day.T1jan333
+      - MYSQL_PASSWORD=T0day.T1jan333
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
 
   npm-app:
     container_name: npm-app

@@ -22,10 +22,8 @@ dtoverlay=disable-bt" >> /boot/config.txt
 
 # --- Install Packages
 echo "#  ---  Installing New Packages  ---  #"
-apt update -y
 apt install apt-transport-https ca-certificates software-properties-common gnupg ufw -y
-apt full-upgrade -y
-apt autoremove && apt autoclean -y
+apt update && apt full-upgrade -y
 
 # --- Install Tailscale
 curl -fsSL https://pkgs.tailscale.com/stable/raspbian/bookworm.gpg | apt-key add -
@@ -57,9 +55,9 @@ sh -c 'echo "/swapfile none swap sw 0 0" >> /etc/fstab' && cat /etc/fstab
 echo "#  ---  2GB swap file created ---  #"
 
 # --- Addons
-rm -rf /etc/update-motd.d/* && rm -rf /etc/motd && rm /etc/motd.d/cockpit
+rm -rf /etc/update-motd.d/* && rm -rf /etc/motd
 mv /opt/titan/10-uname /etc/update-motd.d/ && chmod +x /etc/update-motd.d/10-uname
-mv /opt/titan/.scripts/npm/npm_config.json /opt/titan/.scripts/npm/config.json
+#mv /opt/titan/.scripts/npm/npm_config.json /opt/titan/.scripts/npm/config.json
 
 echo "
 net.ipv4.ip_forward = 1
@@ -82,7 +80,7 @@ mount -a
 # --- Firewall Rules 
 ufw deny 22
 ufw allow 4792
-ufw allow from 192.168.7.0/24 to any port 8123 #nextcloud
+ufw allow from 192.168.7.0/24 to any port 8080 #nextcloud
 ufw allow tailscale
 ufw allow 53 #pihole
 ufw allow 85 #homer
@@ -107,15 +105,6 @@ reboot
 #65=10
 #70=45
 #75=100" >> /etc/argononed.conf
-
-# --- Install casaos
-#curl -fsSL https://get.casaos.io | sudo bash
-#rm /etc/casaos/gateway.ini && mv /opt/titan/.scripts/gateway.ini /etc/casaos
-
-#echo "deb http://deb.debian.org/debian bookworm-backports main contrib" >> /etc/apt/sources.list
-# --- Install CockPit
-#apt install -t bookworm-backports cockpit --no-install-recommends
-#rm /etc/cockpit/disallowed-users && touch /etc/cockpit/disallowed-users
 
 #mkdir /env/libraries/
 #mkdir /env/libraries/baari && mkdir /env/libraries/shanice
