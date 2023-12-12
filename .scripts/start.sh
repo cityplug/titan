@@ -7,7 +7,7 @@
 # cd /opt/titan/.scripts && ./finish.sh
 
 # --- Initialzing libraries
-hostnamectl set-hostname titan.local.cityplug
+#hostnamectl set-hostname titan.local.cityplug
 
 # --- Change root password
 echo "#  ---  Change root password  ---  #"
@@ -78,7 +78,7 @@ echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /env/  auto   defaults,user,nofa
 mount -a
 
 # --- Firewall Rules 
-ufw deny 22
+#ufw deny 22
 ufw allow 4792
 ufw allow from 192.168.7.0/24 to any port 8080 #nextcloud
 ufw allow tailscale
@@ -96,7 +96,7 @@ tailscale up --advertise-routes=192.168.7.0/24
 echo "#  ---  SYSTEM REBOOT  ---  #"
 # ----> Next Script | more.sh
 reboot
-------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 # --- ArgonOne Fan Control
 #curl https://download.argon40.com/argonfanhat.sh | bash
