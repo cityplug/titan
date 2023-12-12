@@ -65,9 +65,9 @@ net.ipv6.conf.all.forwarding = 1" >> /etc/sysctl.conf
 sysctl -p
 
 # --- Security Addons
-groupadd ssh-users,titan
-usermod -aG ssh-users,titan focal
-sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
+#groupadd ssh-users,titan
+#usermod -aG ssh-users,titan focal
+#sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
 
 # -- Parent Folder
 mkdir -p /env/appdata/ 
@@ -75,7 +75,7 @@ chmod -R 777 /env/ && chown -R nobody:nogroup /env/
 
 # --- Mount USB
 echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /env/  auto   defaults,user,nofail  0   0" >> /etc/fstab
-mount -a
+#mount -a
 
 # --- Firewall Rules 
 #ufw deny 22
