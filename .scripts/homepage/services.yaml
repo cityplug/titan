@@ -3,65 +3,51 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Core - Services:
-    - Pihole:
-        href: http://192.168.10.92/admin
-        description: ...
-        icon: pi-hole.png
-        ping: 192.168.10.92:81
-        container: pihole
-        widget:
-          type: pihole
-          url: http://192.168.10.92
-          key: 28c361af2b72518bbb6c37405f604461c1a4143d4f9af9d99b16be5a25765aa3
     - Titan Proxy:
-        href: http://192.168.10.92:91
+        href: http://192.168.7.254:91
         description: ... ...
         icon: nginx-proxy-manager.png
-        ping: 192.168.10.92:91
+        ping: 192.168.7.254
         container: npm-app
         widget:
           type: npm
-          url: http://192.168.10.92:91
+          url: http://192.168.7.254:91
           username: seni@cityplug.co.uk
           password: Szxs234.
     - Nextcloud:
-        href: http://192.168.10.92:8123
+        href: http://192.168.7.254:8080
         description: ... ... ...
         icon: nextcloud.png
-        ping: 192.168.10.92:8123
-        container: nextcloud_app
+        ping: 192.168.7.254
+        container: nextcloud
         widget:
           type: nextcloud
-          url: http://192.168.10.92:8123
+          url: http://192.168.7.254:8080
           username: focal
           password: Szxs234.
+
+- Secondary - Services:
+    - Pihole:
+        href: http://192.168.7.254/admin
+        description: ...
+        icon: pi-hole.png
+        ping: 192.168.7.254
+        container: pihole
+        widget:
+          type: pihole
+          url: http://192.168.7.254
+          key: 28c361af2b72518bbb6c37405f604461c1a4143d4f9af9d99b16be5a25765aa3
     - Portainer:
-        href: https://192.168.10.92:9443
+        href: https://192.168.7.254:9443
         description: ... ... ... ...
         icon: portainer.png
-        ping: 192.168.10.92:9000
+        ping: 192.168.7.254
         container: portainer
         widget:
           type: portainer
-          url: https://192.168.10.92:9443
+          url: https://192.168.7.254:9443
           env: 2
           key: ptr_DVOfwJakP1G7UZLbQlF5uPPogyMZ1Voo15tcO4f9c5s=
-
-- Secondary - Services:
-    - Reolink:
-        icon: channels.png
-        href: http://192.168.7.***
-        description: ... ...
-        ping:
-    - Watchtower:
-        href:
-        description: ... ...
-        icon: watchtower.png
-        container: watchtower
-        widget:
-          type: watchtower
-          url: http://192.168.10.92:8080
-          key: demotoken
 
 - Remote - Services:
     - Unifi Portal:
@@ -75,7 +61,12 @@
           username: username
           password: password
           site: Site Name # optional
-    - Resolvr:
+    - Reolink:
+        icon: channels.png
+        href: http://192.168.7.***
+        description: ... ...
+        ping:
+    - Alfa:
         href: http://192.168.10.254
         description: ... ...
         icon: baserow.png

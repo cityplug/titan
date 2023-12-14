@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.6"
 
 services:
 
@@ -9,7 +9,7 @@ services:
     environment:
       WEBTHEME: default-dark
       TZ: Europe/London
-      WEBPASSWORD:
+      WEBPASSWORD: Szxs234.
       PIHOLE_DOMAIN: titan.local.cityplug
     volumes:
       - /env/appdata/pihole:/etc/pihole/
@@ -80,7 +80,7 @@ services:
       - 91:81
       - 443:443
     volumes:
-      - /opt/titan/.scripts/npm/config.json:/app/config/production.json
+      - /env/appdata/npm/config.json:/app/config/production.json
       - /env/appdata/npm/data:/data
       - /env/appdata/npm/letsencrypt:/etc/letsencrypt
     restart: always

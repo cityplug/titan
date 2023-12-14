@@ -4,26 +4,38 @@
 
 title: Titan Dashboard
 
-background: https://cityplug-my.sharepoint.com/:i:/g/personal/seni_cityplug_co_uk/ESoh6MoGdsxIgtBZDIjyXzMBY5LntazpBUMMV1S0-S_epg?e=8tyfr4
+background:
+  image: /images/background.jpg
+  blur: sm
+  saturate: 25 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+  brightness: 30 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+  opacity: 50 # 0-100
 
-headerStyle: clean
 cardBlur: sm
-
+theme: dark
+headerStyle: clean
+iconStyle: theme
+statusStyle: basic
 layout:
   Core - Services:
     style: row
-    columns: 4
-
-providers:
-  openweathermap: openweathermapapikey
-  weatherapi: weatherapiapikey
-
-quicklaunch:
-  searchDescriptions: true
-  hideInternetSearch: true
-  hideVisitURL: true
+    columns: 2
+  Secondary - Services:
+    style: row
+    columns: 2
+  Remote - Services:
+    style: row
+    columns: 3
 
 hideVersion: true
 hideErrors: true
 showStats: true
-statusStyle: "basic"
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  hideVisitURL: true
+logpath: /env/appdata/homepage/
+
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey

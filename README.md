@@ -1,4 +1,11 @@
 #### Assign Static IP
+nmcli connection modify 'Wired connection 1' ipv4.address 192.168.7.254/24
+nmcli connection modify 'Wired connection 1' ipv4.gateway 192.168.7.1
+nmcli connection modify 'Wired connection 1' ipv4.method manual
+nmcli connection modify 'Wired connection 1' ipv4.dns '1.1.1.1'
+nmcli connection down 'Wired connection 1'
+nmcli connection up 'Wired connection 1'
+
     echo "
     interface eth0
     static ip_address=192.168.7.254/24
@@ -21,17 +28,6 @@
 ###### Change “PermitRootLogin” and set to “no”. Set PermitRootLogin to “no”, 
 ###### Scroll further and set “PasswordAuthentication” to “no” and finally set PasswordAuthentication to “no”
     apt update && apt full-upgrade -y && reboot && exit
---------------------------------------------------------------------------------
-#### Run the following scripts
-    sudo su
-####
-    cd /opt && apt install git -y && git clone https://github.com/cityplug/pluto && chmod +x pluto/.scripts/*
-####
-    cd pluto/.scripts/ && ./start.sh
-####
-    sudo su
-####
-    cd /opt/pluto/.scripts/ && ./finish.sh
 --------------------------------------------------------------------------------
 #### Host Machine
     echo "
