@@ -6,9 +6,6 @@
 # cd /opt/titan/.scripts && ./start.sh
 # cd /opt/titan/.scripts && ./finish.sh
 
-# --- Initialzing libraries
-#hostnamectl set-hostname titan.local.cityplug
-
 # --- Change root password
 echo "#  ---  Change root password  ---  #"
 passwd root
@@ -57,7 +54,7 @@ echo "#  ---  2GB swap file created ---  #"
 # --- Addons
 rm -rf /etc/update-motd.d/* && rm -rf /etc/motd
 mv /opt/titan/10-uname /etc/update-motd.d/ && chmod +x /etc/update-motd.d/10-uname
-#mv /opt/titan/.scripts/npm/npm_config.json /opt/titan/.scripts/npm/config.json
+mv /opt/titan/.scripts/npm/npm_config.json /opt/titan/.scripts/npm/config.json
 
 echo "
 net.ipv4.ip_forward = 1
@@ -65,9 +62,9 @@ net.ipv6.conf.all.forwarding = 1" >> /etc/sysctl.conf
 sysctl -p
 
 # --- Security Addons
-#groupadd ssh-users,titan
-#usermod -aG ssh-users,titan focal
-#sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
+groupadd ssh-users
+usermod -aG ssh-users focal
+sed -i '15i\AllowGroups ssh-users\n' /etc/ssh/sshd_config
 
 # -- Parent Folder
 mkdir -p /env/appdata/ 
@@ -75,10 +72,10 @@ chmod -R 777 /env/ && chown -R nobody:nogroup /env/
 
 # --- Mount USB
 echo "UUID=15b585b7-6eb4-42ce-9bfc-60398e975c74 /env/  auto   defaults,user,nofail  0   0" >> /etc/fstab
-#mount -a
+mount -a
 
 # --- Firewall Rules 
-#ufw deny 22
+ufw deny 22
 ufw allow 4792
 ufw allow from 192.168.7.0/24 to any port 8080 #nextcloud
 ufw allow tailscale
